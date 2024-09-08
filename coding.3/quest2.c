@@ -15,8 +15,8 @@ int main()
 
     if (rc == 0)
     {
-        const char * child_msg = "Hello, I am child process. Writing on you\n";
-        printf("************ Child process writing on file ************\n");
+        const char * child_msg = "Hi, I am child process. Writing on you \n";
+        printf(" child process writing on file \n");
         write(my_file, child_msg , strlen(child_msg));
         exit(0);
     }
@@ -24,7 +24,7 @@ int main()
     {
         wait(NULL);
         const char * parent_msg = "Hello, I am parent process. Writing on you\n";
-        printf("************ Parent process writing on file ************\n");
+        printf("parent process writing on file \n");
         write(my_file, parent_msg, strlen(parent_msg));
     }
     sync();
@@ -33,7 +33,7 @@ int main()
     char * buffer = malloc(sb.st_size);
     read(my_file, buffer, sb.st_size);
 
-    printf("Content of file: \n%s", buffer);
+    printf("File contents: \n%s", buffer);
     close(my_file);
     return 0;
 }
@@ -41,5 +41,7 @@ int main()
 /*******************************
 Josh Wakin
 
-
+Both the child and parent can access the file when using open,
+but because we don't make it wait for each process to finish it
+is random in which order they do so.
 *******************************/
